@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Website Screenshot App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container fade-in">
+        <h1 class="title">📸 Website Screenshot Generator</h1>
+
+        <div class="input-group">
+            <input type="text" id="urlInput" placeholder="Enter full URL (https://...)">
+            <button id="captureBtn">Capture</button>
+        </div>
+
+        <div id="loading" class="loader hidden"></div>
+
+        <div class="image-container fade-in" id="imageBox">
+            <img id="screenshotImg" />
+            <div class="btn-group hidden" id="actionBtns">
+                <button id="downloadBtn">💾 Save</button>
+                <button id="shareBtn">🔗 Share</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
