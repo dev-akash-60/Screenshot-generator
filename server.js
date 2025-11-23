@@ -20,8 +20,7 @@ app.post("/screenshot", async (req, res) => {
                 "--disable-setuid-sandbox",
                 "--disable-dev-shm-usage",
                 "--disable-gpu",
-                "--no-zygote",
-                "--disable-software-rasterizer"
+                "--no-zygote"
             ]
         });
 
