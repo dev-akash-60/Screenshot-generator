@@ -14,16 +14,15 @@ app.post("/screenshot", async (req, res) => {
 
     try {
         const browser = await puppeteer.launch({
-            headless: true,
+            headless: "new",
             args: [
                 "--no-sandbox",
                 "--disable-setuid-sandbox",
                 "--disable-dev-shm-usage",
                 "--disable-gpu",
                 "--no-zygote",
-                "--disable-software-rasterizer",
-            ],
-            executablePath: process.env.PUPPETEER_EXECUTABLE_PATH
+                "--disable-software-rasterizer"
+            ]
         });
 
         const page = await browser.newPage();
@@ -42,6 +41,5 @@ app.post("/screenshot", async (req, res) => {
     }
 });
 
-// IMPORTANT: Render requires this
 const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
