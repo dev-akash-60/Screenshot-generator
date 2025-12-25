@@ -1,44 +1,35 @@
 const express = require("express");
 const puppeteer = require("puppeteer");
+const path = require("path");
 
 const app = express();
+
+app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
-app.use(express.static("public"));
 
 app.post("/screenshot", async (req, res) => {
-    const { url } = req.body;
-
-    if (!url) {
-        return res.status(400).send("No URL provided");
-    }
-
     try {
-        const browser = await puppeteer.launch({
-            headless: "new",
-            args: [
-                "--no-sandbox",
-                "--disable-setuid-sandbox",
-                "--disable-dev-shm-usage",
-                "--disable-gpu",
-                "--no-zygote"
-            ]
-        });
+        const { url } = req.body;
 
+        if (!url || !/^https?:\/\//.test(url)) {
+            return res.status(400).json({ error: "URL must start with http:// or https://" });
+        }
+
+        console.log("📌 Capturing screenshot for:", url);
+
+        const browser = await puppeteer.launch();
         const page = await browser.newPage();
-        await page.goto(url, { waitUntil: "networkidle2", timeout: 60000 });
+        await page.goto(url, { waitUntil: "networkidle2" });
 
         const screenshot = await page.screenshot({ fullPage: true });
-
         await browser.close();
 
         res.setHeader("Content-Type", "image/png");
         res.send(screenshot);
-
     } catch (err) {
-        console.error(err);
-        res.status(500).send("Error capturing screenshot");
+        console.error("🔥 Error:", err.message);
+        res.status(500).json({ error: err.message });
     }
 });
 
-const PORT = process.env.PORT || 10000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(3000, () => console.log("🚀 Server running at http://localhost:3000"));
